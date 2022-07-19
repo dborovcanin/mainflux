@@ -23,17 +23,17 @@ import (
 )
 
 const (
-	contentType = "application/json"
-	offsetKey   = "offset"
-	limitKey    = "limit"
-	nameKey     = "name"
-	orderKey    = "order"
-	dirKey      = "dir"
-	metadataKey = "metadata"
-	disconnKey  = "disconnected"
-	sharedKey   = "shared"
-	defOffset   = 0
-	defLimit    = 10
+	contentType        = "application/json"
+	offsetKey          = "offset"
+	limitKey           = "limit"
+	nameKey            = "name"
+	orderKey           = "order"
+	dirKey             = "dir"
+	metadataKey        = "metadata"
+	disconnKey         = "disconnected"
+	sharedKey          = "shared"
+	defOffset   uint64 = 0
+	defLimit    uint64 = 10
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -330,12 +330,12 @@ func decodeView(_ context.Context, r *http.Request) (interface{}, error) {
 }
 
 func decodeList(_ context.Context, r *http.Request) (interface{}, error) {
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -390,12 +390,12 @@ func decodeListByMetadata(_ context.Context, r *http.Request) (interface{}, erro
 }
 
 func decodeListByConnection(_ context.Context, r *http.Request) (interface{}, error) {
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -454,12 +454,12 @@ func decodeConnectList(_ context.Context, r *http.Request) (interface{}, error) 
 }
 
 func decodeListMembersRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}

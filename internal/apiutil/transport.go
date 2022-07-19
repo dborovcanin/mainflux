@@ -54,26 +54,6 @@ func LoggingErrorEncoder(logger logger.Logger, enc kithttp.ErrorEncoder) kithttp
 	}
 }
 
-// ReadUintQuery reads the value of uint64 http query parameters for a given key
-func ReadUintQuery(r *http.Request, key string, def uint64) (uint64, error) {
-	vals := bone.GetQuery(r, key)
-	if len(vals) > 1 {
-		return 0, errors.ErrInvalidQueryParams
-	}
-
-	if len(vals) == 0 {
-		return def, nil
-	}
-
-	strval := vals[0]
-	val, err := strconv.ParseUint(strval, 10, 64)
-	if err != nil {
-		return 0, errors.ErrInvalidQueryParams
-	}
-
-	return val, nil
-}
-
 // ReadStringQuery reads the value of string http query parameters for a given key
 func ReadStringQuery(r *http.Request, key string, def string) (string, error) {
 	vals := bone.GetQuery(r, key)
@@ -127,9 +107,41 @@ func ReadBoolQuery(r *http.Request, key string, def bool) (bool, error) {
 	return b, nil
 }
 
+type number interface {
+	int64 | float64 | uint64
+}
+
+// ReadNumQuery returns a numeric value.
+func ReadNumQuery[N number](r *http.Request, key string, def N) (N, error) {
+	vals := bone.GetQuery(r, key)
+	if len(vals) > 1 {
+		return 0, errors.ErrInvalidQueryParams
+	}
+	if len(vals) == 0 {
+		return def, nil
+	}
+	val := vals[0]
+	var ret N
+	var err error
+	switch p := any(&ret).(type) {
+	case *int64:
+		*p, err = strconv.ParseInt(val, 10, 64)
+	case *uint64:
+		*p, err = strconv.ParseUint(val, 10, 64)
+	case *float64:
+		*p, err = strconv.ParseFloat(val, 64)
+	default:
+		return def, nil
+	}
+	if err != nil {
+		return 0, errors.ErrInvalidQueryParams
+	}
+	return ret, nil
+}
+
 // ReadFloatQuery reads the value of float64 http query parameters for a given key
 func ReadFloatQuery(r *http.Request, key string, def float64) (float64, error) {
-	vals := bone.GetQuery(r, key)
+	vals := r.Header.Values(key)
 	if len(vals) > 1 {
 		return 0, errors.ErrInvalidQueryParams
 	}

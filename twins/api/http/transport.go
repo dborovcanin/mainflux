@@ -22,13 +22,13 @@ import (
 )
 
 const (
-	contentType = "application/json"
-	offsetKey   = "offset"
-	limitKey    = "limit"
-	nameKey     = "name"
-	metadataKey = "metadata"
-	defLimit    = 10
-	defOffset   = 0
+	contentType        = "application/json"
+	offsetKey          = "offset"
+	limitKey           = "limit"
+	nameKey            = "name"
+	metadataKey        = "metadata"
+	defLimit    uint64 = 10
+	defOffset   uint64 = 0
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -126,12 +126,12 @@ func decodeView(_ context.Context, r *http.Request) (interface{}, error) {
 }
 
 func decodeList(_ context.Context, r *http.Request) (interface{}, error) {
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
 
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
@@ -158,12 +158,12 @@ func decodeList(_ context.Context, r *http.Request) (interface{}, error) {
 }
 
 func decodeListStates(_ context.Context, r *http.Request) (interface{}, error) {
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
 
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}

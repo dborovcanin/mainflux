@@ -19,11 +19,11 @@ import (
 )
 
 const (
-	contentType = "application/json"
-	offsetKey   = "offset"
-	limitKey    = "limit"
-	defOffset   = 0
-	defLimit    = 10
+	contentType        = "application/json"
+	offsetKey          = "offset"
+	limitKey           = "limit"
+	defOffset   uint64 = 0
+	defLimit    uint64 = 10
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -87,11 +87,11 @@ func encodeResponse(_ context.Context, w http.ResponseWriter, response interface
 }
 
 func decodeListCerts(_ context.Context, r *http.Request) (interface{}, error) {
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}

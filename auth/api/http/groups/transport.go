@@ -18,17 +18,17 @@ import (
 )
 
 const (
-	contentType = "application/json"
-	maxNameSize = 254
-	offsetKey   = "offset"
-	limitKey    = "limit"
-	levelKey    = "level"
-	metadataKey = "metadata"
-	treeKey     = "tree"
-	groupType   = "type"
-	defOffset   = 0
-	defLimit    = 10
-	defLevel    = 1
+	contentType        = "application/json"
+	maxNameSize        = 254
+	offsetKey          = "offset"
+	limitKey           = "limit"
+	levelKey           = "level"
+	metadataKey        = "metadata"
+	treeKey            = "tree"
+	groupType          = "type"
+	defOffset   uint64 = 0
+	defLimit    uint64 = 10
+	defLevel    uint64 = 1
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -140,7 +140,7 @@ func decodeShareGroupRequest(ctx context.Context, r *http.Request) (interface{},
 }
 
 func decodeListGroupsRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	l, err := apiutil.ReadUintQuery(r, levelKey, defLevel)
+	l, err := apiutil.ReadNumQuery(r, levelKey, defLevel)
 	if err != nil {
 		return nil, err
 	}
@@ -166,12 +166,12 @@ func decodeListGroupsRequest(_ context.Context, r *http.Request) (interface{}, e
 }
 
 func decodeListMembersRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -204,12 +204,12 @@ func decodeListMembersRequest(_ context.Context, r *http.Request) (interface{}, 
 }
 
 func decodeListMembershipsRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	o, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	o, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	l, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	l, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}

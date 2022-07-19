@@ -21,24 +21,24 @@ import (
 )
 
 const (
-	contentType    = "application/json"
-	offsetKey      = "offset"
-	limitKey       = "limit"
-	formatKey      = "format"
-	subtopicKey    = "subtopic"
-	publisherKey   = "publisher"
-	protocolKey    = "protocol"
-	nameKey        = "name"
-	valueKey       = "v"
-	stringValueKey = "vs"
-	dataValueKey   = "vd"
-	boolValueKey   = "vb"
-	comparatorKey  = "comparator"
-	fromKey        = "from"
-	toKey          = "to"
-	defLimit       = 10
-	defOffset      = 0
-	defFormat      = "messages"
+	contentType           = "application/json"
+	offsetKey             = "offset"
+	limitKey              = "limit"
+	formatKey             = "format"
+	subtopicKey           = "subtopic"
+	publisherKey          = "publisher"
+	protocolKey           = "protocol"
+	nameKey               = "name"
+	valueKey              = "v"
+	stringValueKey        = "vs"
+	dataValueKey          = "vd"
+	boolValueKey          = "vb"
+	comparatorKey         = "comparator"
+	fromKey               = "from"
+	toKey                 = "to"
+	defLimit       uint64 = 10
+	defOffset      uint64 = 0
+	defFormat             = "messages"
 )
 
 var (
@@ -72,12 +72,12 @@ func MakeHandler(svc readers.MessageRepository, tc mainflux.ThingsServiceClient,
 }
 
 func decodeList(ctx context.Context, r *http.Request) (interface{}, error) {
-	offset, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	offset, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return nil, err
 	}
 
-	limit, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	limit, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func decodeList(ctx context.Context, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	v, err := apiutil.ReadFloatQuery(r, valueKey, 0)
+	v, err := apiutil.ReadNumQuery(r, valueKey, 0.0)
 	if err != nil {
 		return nil, err
 	}
@@ -127,12 +127,12 @@ func decodeList(ctx context.Context, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	from, err := apiutil.ReadFloatQuery(r, fromKey, 0)
+	from, err := apiutil.ReadNumQuery(r, fromKey, 0.0)
 	if err != nil {
 		return nil, err
 	}
 
-	to, err := apiutil.ReadFloatQuery(r, toKey, 0)
+	to, err := apiutil.ReadNumQuery(r, toKey, 0.0)
 	if err != nil {
 		return nil, err
 	}

@@ -27,8 +27,8 @@ const (
 	limitKey    = "limit"
 	topicKey    = "topic"
 	contactKey  = "contact"
-	defOffset   = 0
-	defLimit    = 20
+	defOffset   = uint64(0)
+	defLimit    = uint64(20)
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
@@ -107,13 +107,13 @@ func decodeList(_ context.Context, r *http.Request) (interface{}, error) {
 		req.contact = vals[0]
 	}
 
-	offset, err := apiutil.ReadUintQuery(r, offsetKey, defOffset)
+	offset, err := apiutil.ReadNumQuery(r, offsetKey, defOffset)
 	if err != nil {
 		return listSubsReq{}, err
 	}
 	req.offset = uint(offset)
 
-	limit, err := apiutil.ReadUintQuery(r, limitKey, defLimit)
+	limit, err := apiutil.ReadNumQuery(r, limitKey, defLimit)
 	if err != nil {
 		return listSubsReq{}, err
 	}

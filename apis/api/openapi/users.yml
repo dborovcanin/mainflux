@@ -57,7 +57,7 @@ paths:
         "415":
           description: Missing or invalid content type.
         "422":
-          description: Database can't process request.          
+          description: Database can't process request.
         "500":
           $ref: "#/components/responses/ServiceError"
 
@@ -572,6 +572,8 @@ paths:
           description: Missing or invalid access token provided.
         "403":
           description: Failed to perform authorization over the entity.
+        "404":
+          description: A non-existent entity request.
         "409":
           description: Failed due to using an existing identity.
         "415":
@@ -695,6 +697,8 @@ paths:
           description: Missing or invalid access token provided.
         "403":
           description: Unauthorized access to group id.
+        "404":
+          description: A non-existent entity request.
         "500":
           $ref: "#/components/responses/ServiceError"
 
@@ -1787,6 +1791,10 @@ components:
                 type: string
                 format: email
                 description: User email.
+              host:
+                type: string
+                example: examplehost
+                description: Email host.
 
     PasswordReset:
       description: Password reset request data, new password and token that is appended on password reset link received in email.
@@ -1799,11 +1807,13 @@ components:
                 type: string
                 format: password
                 description: New password.
+                example: 12345678
                 minimum: 8
               confirm_password:
                 type: string
                 format: password
                 description: New confirmation password.
+                example: 12345678
                 minimum: 8
               token:
                 type: string
